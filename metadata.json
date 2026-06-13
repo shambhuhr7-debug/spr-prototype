@@ -1,0 +1,6 @@
+{
+  "name": "South Platte Renew",
+  "description": "High-fidelity website redesign prototype for South Platte Renew (SPR), complying with WCAG 2.2 Level AA accessibility standards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
