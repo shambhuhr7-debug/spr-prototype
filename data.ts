@@ -3,7 +3,7 @@ import { PARCProject, Job } from './types';
 export const SYSTEM_STATS = {
   residentsServed: "300,000+",
   connectingCommunities: 19,
-  serviceAreaSqMi: 75,
+  serviceAreaSqMi: 108,
   biosolidsAcres: "7,530.6",
   dailyFlowMGD: "~20 MGD",
   ratedCapacityMGD: "50 MGD",

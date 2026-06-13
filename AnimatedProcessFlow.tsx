@@ -73,11 +73,11 @@ export default function AnimatedProcessFlow({ reduceMotion }: AnimatedProcessFlo
 
   return (
     <section 
-      className="bg-white border border-gray-250 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6"
+      className="bg-white border border-gray-300 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6"
       id="animated-flow-manifold"
       aria-label="Water Recovery Process Simulator"
     >
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-gray-150 pb-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-gray-200 pb-4">
         <div className="space-y-1">
           <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-brand-primary block">
             Core Recovery Loop
@@ -98,7 +98,7 @@ export default function AnimatedProcessFlow({ reduceMotion }: AnimatedProcessFlo
       {/* Responsive Process Pipeline Block */}
       <div className="relative pt-6 pb-2" id="manifold-pipeline-canvas">
         {/* SVG Pipeline Connection Background (Hidden on mobile stack, displayed on lg) */}
-        <div className="absolute inset-x-0 top-18 h-2 bg-slate-100 rounded-full hidden md:block border-t border-b border-gray-200 overflow-hidden">
+        <div className="absolute inset-x-0 top-16 h-2 bg-slate-100 rounded-full hidden md:block border-t border-b border-gray-200 overflow-hidden">
           {/* Animated Droplets Pipe Path */}
           <div className="w-full h-full relative">
             <div 
@@ -220,7 +220,7 @@ export default function AnimatedProcessFlow({ reduceMotion }: AnimatedProcessFlo
 
                 {/* Micro-Droplet Trailing Pulse Indicator representing real-time movement between nodes (Disabled on mobile, and stopped when reduceMotion) */}
                 {!reduceMotion && idx < 4 && (
-                  <div className="hidden md:block absolute -right-3.5 top-17 z-30 pointer-events-none">
+                  <div className="hidden md:block absolute -right-3.5 top-16 z-30 pointer-events-none">
                     <span className="inline-flex h-3.5 w-3.5 rounded-full bg-brand-primary/55 animate-ping opacity-75" />
                     <span className="absolute -left-0.5 top-0.5 inline-flex h-2.5 w-2.5 rounded-full bg-brand-teal border border-white" />
                   </div>
@@ -234,7 +234,7 @@ export default function AnimatedProcessFlow({ reduceMotion }: AnimatedProcessFlo
       {/* Synchronized Telemetry Parameters Display Area */}
       <div 
         id="process-manifold-detail-card"
-        className="bg-neutral-soft border border-gray-150 rounded-2xl p-5 md:p-6 shadow-sm"
+        className="bg-neutral-soft border border-gray-200 rounded-2xl p-5 md:p-6 shadow-sm"
         role="region"
         aria-live="polite"
         aria-label={`Detailed engineering compliance for selected stage: ${activeStage.name}`}
@@ -263,7 +263,7 @@ export default function AnimatedProcessFlow({ reduceMotion }: AnimatedProcessFlo
               {activeStage.description}
             </p>
 
-            <div className="bg-white border border-gray-150 rounded-xl p-3.5 flex items-start gap-3">
+            <div className="bg-white border border-gray-200 rounded-xl p-3.5 flex items-start gap-3">
               <div className="h-7 w-7 rounded-lg bg-teal-50 text-brand-teal border border-brand-teal/10 flex items-center justify-center shrink-0 mt-0.5">
                 <Info className="h-4 w-4" />
               </div>
@@ -281,7 +281,7 @@ export default function AnimatedProcessFlow({ reduceMotion }: AnimatedProcessFlo
           {/* Audit Metrics Panel Column */}
           <div className="lg:col-span-4 bg-white border border-gray-200 rounded-xl p-4 flex flex-col justify-between gap-4">
             <div className="space-y-1">
-              <span className="block text-[10px] font-extrabold text-slate-500 font-mono uppercase tracking-widest border-b border-gray-150 pb-1.5 mb-2">
+              <span className="block text-[10px] font-extrabold text-slate-500 font-mono uppercase tracking-widest border-b border-gray-200 pb-1.5 mb-2">
                 Telemetric Audit
               </span>
               <div className="space-y-2">
@@ -301,7 +301,7 @@ export default function AnimatedProcessFlow({ reduceMotion }: AnimatedProcessFlo
             </div>
 
             {/* Custom KPI badge */}
-            <div className="bg-slate-50 border border-slate-150 p-3.5 rounded-lg text-center space-y-1">
+            <div className="bg-slate-50 border border-slate-200 p-3.5 rounded-lg text-center space-y-1">
               <span className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider leading-none">
                 {activeStage.metricLabel}
               </span>

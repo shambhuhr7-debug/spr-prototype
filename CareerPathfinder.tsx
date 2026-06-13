@@ -181,11 +181,11 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
 
   return (
     <section 
-      className="bg-white border border-gray-250 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6"
+      className="bg-white border border-gray-300 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6"
       id="operator-career-pathfinder"
       aria-label="Colorado Operator Career guided planner"
     >
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-150 pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-200 pb-4">
         <div className="space-y-1">
           <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-brand-primary block">
             Guided Resource Planner
@@ -200,11 +200,11 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
         
         {/* Step indicator bubbles */}
         <div className="flex items-center gap-2 text-xs font-mono font-bold shrink-0">
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center border ${currentStep >= 1 ? 'bg-brand-primary text-white border-brand-primary' : 'bg-slate-50 text-slate-400 border-slate-250'}`}>1</span>
+          <span className={`h-6 w-6 rounded-full flex items-center justify-center border ${currentStep >= 1 ? 'bg-brand-primary text-white border-brand-primary' : 'bg-slate-50 text-slate-400 border-slate-300'}`}>1</span>
           <span className="h-0.5 w-4 bg-slate-300" />
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center border ${currentStep >= 2 ? 'bg-brand-primary text-white border-brand-primary' : 'bg-slate-50 text-slate-400 border-slate-250'}`}>2</span>
+          <span className={`h-6 w-6 rounded-full flex items-center justify-center border ${currentStep >= 2 ? 'bg-brand-primary text-white border-brand-primary' : 'bg-slate-50 text-slate-400 border-slate-300'}`}>2</span>
           <span className="h-0.5 w-4 bg-slate-300" />
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center border ${currentStep >= 3 ? 'bg-brand-primary text-white border-brand-primary' : 'bg-slate-50 text-slate-400 border-slate-250'}`}>3</span>
+          <span className={`h-6 w-6 rounded-full flex items-center justify-center border ${currentStep >= 3 ? 'bg-brand-primary text-white border-brand-primary' : 'bg-slate-50 text-slate-400 border-slate-300'}`}>3</span>
         </div>
       </div>
 
@@ -231,7 +231,7 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
                     className={`text-left p-4 rounded-2xl border transition-all duration-200 outline-none focus:ring-2 focus:ring-offset-2 flex items-start gap-4 cursor-pointer hover:-translate-y-0.5 ${
                       isSelected 
                         ? 'bg-brand-primary/5 border-brand-primary ring-1 ring-brand-primary shadow-sm' 
-                        : 'bg-white border-gray-250 hover:border-brand-primary'
+                        : 'bg-white border-gray-300 hover:border-brand-primary'
                     }`}
                     id={`pathfinder-bg-${bg.id}`}
                     aria-label={`Option: ${bg.name}. ${bg.description}`}
@@ -277,7 +277,7 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
                     className={`w-full text-left p-4 rounded-xl border cursor-pointer flex items-center justify-between gap-4 outline-none transition-colors ${
                       isSelected 
                         ? 'bg-brand-teal/5 border-brand-teal ring-1 ring-brand-teal shadow-xs' 
-                        : 'bg-white border-gray-250 hover:border-brand-teal'
+                        : 'bg-white border-gray-300 hover:border-brand-teal'
                     }`}
                     id={`pathfinder-exp-${exp.id}`}
                     aria-label={`Option experience: ${exp.name}. ${exp.description}`}
@@ -299,7 +299,7 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
             <div className="flex justify-between items-center pt-2">
               <button
                 onClick={handlePrevStep}
-                className="flex items-center gap-1.5 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold border border-gray-250 rounded-lg cursor-pointer transition-colors"
+                className="flex items-center gap-1.5 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold border border-gray-300 rounded-lg cursor-pointer transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back</span>
@@ -349,7 +349,7 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
                   </div>
                 </div>
 
-                <div className="bg-slate-50 border border-gray-150 p-3.5 rounded-xl flex items-center gap-3 mt-4">
+                <div className="bg-slate-50 border border-gray-200 p-3.5 rounded-xl flex items-center gap-3 mt-4">
                   <BookOpen className="h-5 w-5 text-brand-primary shrink-0" />
                   <div className="text-[10px] font-sans text-slate-500 leading-relaxed">
                     <span className="block font-bold text-neutral-ink text-xs mb-0.5">100% Paid Educational Materials</span>
@@ -359,7 +359,7 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
               </div>
 
               {/* Matched Open Jobs Box (Lg: 5cols) */}
-              <div className="lg:col-span-5 bg-neutral-soft border border-gray-150 rounded-2xl p-5 md:p-6 flex flex-col justify-between space-y-4">
+              <div className="lg:col-span-5 bg-neutral-soft border border-gray-200 rounded-2xl p-5 md:p-6 flex flex-col justify-between space-y-4">
                 <div className="space-y-3">
                   <span className="block text-[10px] font-mono tracking-wider font-bold text-slate-500 uppercase border-b border-gray-200 pb-1.5">
                     Direct matched Openings ({matchedJobsInCatalog.length})
@@ -368,7 +368,7 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
                   <div className="space-y-3">
                     {matchedJobsInCatalog.length > 0 ? (
                       matchedJobsInCatalog.map(job => (
-                        <div key={job.id} className="bg-white border border-gray-150 p-4 rounded-xl space-y-3 hover:border-brand-teal transition-all">
+                        <div key={job.id} className="bg-white border border-gray-200 p-4 rounded-xl space-y-3 hover:border-brand-teal transition-all">
                           <div className="space-y-1 font-sans">
                             <h4 className="text-xs font-bold text-neutral-ink font-display leading-snug line-clamp-2">
                               {job.title}
@@ -402,7 +402,7 @@ export default function CareerPathfinder({ reduceMotion, onSelectJob }: CareerPa
                       // Reset to custom background stage but preserve choices
                       announceStepChange(1);
                     }}
-                    className="w-full py-2.5 bg-white text-slate-700 text-xs font-bold border border-gray-250 rounded-xl hover:bg-slate-50 cursor-pointer text-center"
+                    className="w-full py-2.5 bg-white text-slate-700 text-xs font-bold border border-gray-300 rounded-xl hover:bg-slate-50 cursor-pointer text-center"
                     aria-label="Restart career pathfinder session"
                   >
                     Start Over

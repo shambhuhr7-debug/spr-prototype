@@ -135,7 +135,7 @@ export default function PARCMapView({ highContrast, reduceMotion }: PARCMapViewP
                   key={project.id}
                   onClick={() => handleProjectSelect(project.id)}
                   id={`blueprint-hotspot-${project.id}`}
-                  className={`absolute group cursor-pointer p-1 rounded-full transition-all duration-200 ease-out focus:scale-120 outline-none flex items-center justify-center -translate-x-1/2 -translate-y-1/2 ${
+                  className={`absolute group cursor-pointer p-1 rounded-full transition-all duration-200 ease-out focus:scale-110 outline-none flex items-center justify-center -translate-x-1/2 -translate-y-1/2 ${
                     isSelected ? 'z-50 scale-125' : 'z-20 hover:scale-110'
                   }`}
                   style={{ left: `${project.coords.x}%`, top: `${project.coords.y}%` }}
@@ -150,7 +150,7 @@ export default function PARCMapView({ highContrast, reduceMotion }: PARCMapViewP
                   }`} />
                   
                   {/* Central Glow Core */}
-                  <div className={`h-4.5 w-4.5 rounded-full flex items-center justify-center text-[9px] font-bold text-white shadow-md border transition-all duration-200 ${
+                  <div className={`h-4 w-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white shadow-md border transition-all duration-200 ${
                     isSelected 
                       ? 'bg-brand-primary border-white' 
                       : 'bg-[#1A2730] border-brand-teal group-hover:bg-brand-teal'

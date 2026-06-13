@@ -56,7 +56,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
       // Fallback
       setResidents(300000);
       setCommunities(19);
-      setServiceArea(75);
+      setServiceArea(108);
       setFarmAcres(7530);
       return;
     }
@@ -64,7 +64,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
     if (reduceMotion) {
       setResidents(300000);
       setCommunities(19);
-      setServiceArea(75);
+      setServiceArea(108);
       setFarmAcres(7530);
       return;
     }
@@ -113,9 +113,9 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
 
           let sStart = 0;
           sInterval = setInterval(() => {
-            sStart += 2;
-            if (sStart >= 75) {
-              setServiceArea(75);
+            sStart += 3;
+            if (sStart >= 108) {
+              setServiceArea(108);
               clearInterval(sInterval);
             } else {
               setServiceArea(sStart);
@@ -356,7 +356,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
             )}
 
             {successTicket ? (
-              <div className="bg-emerald-550/10 border border-brand-green/30 p-4 rounded-xl space-y-3" role="alert">
+              <div className="bg-emerald-500/10 border border-brand-green/30 p-4 rounded-xl space-y-3" role="alert">
                 <div className="flex items-center gap-2 text-brand-green">
                   <CheckCircle className="h-5 w-5 shrink-0" />
                   <span className="font-bold text-sm">Concern Dispatched Successfully</span>
@@ -476,7 +476,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
             </span>
             <div className="space-y-1.5 h-16 overflow-y-auto pr-1">
               {localReports.map((report, idx) => (
-                <div key={idx} className="flex justify-between items-start gap-3 text-[10px] bg-slate-50 border border-slate-150 p-2 rounded-lg font-mono">
+                <div key={idx} className="flex justify-between items-start gap-3 text-[10px] bg-slate-50 border border-slate-200 p-2 rounded-lg font-mono">
                   <div className="space-y-0.5">
                     <span className="block text-[11px] font-bold text-neutral-ink font-sans leading-tight">
                       {report.locationType}
@@ -637,7 +637,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
       </section>
 
       {/* 4. CIVIC RATE LAW AND COLORADO REGULATION ALERT ACCORDION */}
-      <section className="bg-slate-50 border border-gray-150 rounded-2xl p-6 space-y-4" id="regulatory-compliance-callout">
+      <section className="bg-slate-50 border border-gray-200 rounded-2xl p-6 space-y-4" id="regulatory-compliance-callout">
         <div className="flex items-start gap-4">
           <div className="p-2.5 bg-brand-primary/10 text-brand-primary rounded-xl shrink-0">
             <Shield className="h-6 w-6" />
@@ -653,7 +653,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3">
-          <div className="bg-white p-4 rounded-xl border border-gray-250 flex items-start gap-3">
+          <div className="bg-white p-4 rounded-xl border border-gray-300 flex items-start gap-3">
             <FileText className="h-5 w-5 text-brand-primary shrink-0 mt-0.5" />
             <div className="space-y-1">
               <span className="block text-xs font-bold text-neutral-ink">2026 Littleton Sewer Resolution</span>
@@ -662,7 +662,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
             </div>
           </div>
 
-          <div className="bg-white p-4 rounded-xl border border-gray-250 flex items-start gap-3">
+          <div className="bg-white p-4 rounded-xl border border-gray-300 flex items-start gap-3">
             <Calendar className="h-5 w-5 text-brand-green shrink-0 mt-0.5" />
             <div className="space-y-1">
               <span className="block text-xs font-bold text-neutral-ink">Raftelis Financial Rate Study</span>
@@ -671,8 +671,8 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
             </div>
           </div>
 
-          <div className="bg-white p-4 rounded-xl border border-gray-250 flex items-start gap-3">
-            <Radio className="h-5 w-5 text-indigo-505 shrink-0 mt-0.5" />
+          <div className="bg-white p-4 rounded-xl border border-gray-300 flex items-start gap-3">
+            <Radio className="h-5 w-5 text-indigo-500 shrink-0 mt-0.5" />
             <div className="space-y-1">
               <span className="block text-xs font-bold text-neutral-ink">Podcast: Innovation Flow Ep. 42</span>
               <p className="text-[10px] text-slate-500 font-sans leading-relaxed">Managing dryland biosolid crops in Byers - featuring agricultural lease coordinators.</p>

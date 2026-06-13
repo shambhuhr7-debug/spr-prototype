@@ -33,6 +33,79 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
   const [formError, setFormError] = React.useState('');
   const [submitSuccess, setSubmitSuccess] = React.useState('');
 
+  // Accessibility Refs for Keyboard Focus Management
+  const lastActiveElement = React.useRef<HTMLElement | null>(null);
+  const modalRef = React.useRef<HTMLDivElement | null>(null);
+
+  // Focus tracking and keyboard navigation management inside the applying modal
+  React.useEffect(() => {
+    if (activeJobForForm) {
+      // Store the element that currently has focus to return it back on close
+      lastActiveElement.current = document.activeElement as HTMLElement;
+      
+      const timer = setTimeout(() => {
+        if (modalRef.current) {
+          modalRef.current.focus();
+        }
+      }, 50);
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setActiveJobForForm(null);
+          return;
+        }
+
+        if (e.key === 'Tab') {
+          if (!modalRef.current) return;
+          
+          // Selector for all focusable controls inside the dialog
+          const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+          const focusableElements = Array.from(
+            modalRef.current.querySelectorAll(focusableSelectors)
+          ) as HTMLElement[];
+          const visibleElements = focusableElements.filter(el => {
+            const rect = el.getBoundingClientRect();
+            const isVisible = rect.width > 0 && rect.height > 0;
+            const isNotDisabled = !(el as any).disabled;
+            return isVisible && isNotDisabled;
+          });
+
+          if (visibleElements.length === 0) {
+            e.preventDefault();
+            return;
+          }
+
+          const firstElement = visibleElements[0];
+          const lastElement = visibleElements[visibleElements.length - 1];
+
+          if (e.shiftKey) {
+            // Shift + Tab: reverse cycle
+            if (document.activeElement === firstElement || document.activeElement === modalRef.current) {
+              lastElement.focus();
+              e.preventDefault();
+            }
+          } else {
+            // Tab: normal cycle
+            if (document.activeElement === lastElement) {
+              firstElement.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        clearTimeout(timer);
+        // Direct focus back to original trigger on close
+        if (lastActiveElement.current) {
+          lastActiveElement.current.focus();
+        }
+      };
+    }
+  }, [activeJobForForm]);
+
   // Handle Drag & Drop File Events
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -147,7 +220,7 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
             Search Openings (Keyword)
           </label>
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4.5 w-4.5 text-slate-400" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
             <input
               type="text"
               id="job-search-input"
@@ -269,7 +342,7 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
         </div>
 
         {/* Right Side: Quick FAQ / Joint-Oversight Policy Guidance (Lg: 5cols) */}
-        <div className="lg:col-span-5 bg-slate-50 border border-gray-150 rounded-2xl p-6 space-y-6">
+        <div className="lg:col-span-5 bg-slate-50 border border-gray-200 rounded-2xl p-6 space-y-6">
           <div className="space-y-2">
             <h2 className="text-xs font-bold text-slate-600 uppercase tracking-widest font-mono">
               Recruitment Guidelines
@@ -284,7 +357,7 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
 
           <div className="space-y-4 border-t border-gray-200 pt-4">
             <div className="flex items-start gap-3">
-              <span className="h-5.5 w-5.5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+              <span className="h-5 w-5 rounded-full bg-blue-50 text-brand-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                 1
               </span>
               <div className="space-y-1">
@@ -296,7 +369,7 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
             </div>
 
             <div className="flex items-start gap-3">
-              <span className="h-5.5 w-5.5 rounded-full bg-teal-50 text-brand-teal text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+              <span className="h-5 w-5 rounded-full bg-teal-50 text-brand-teal text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                 2
               </span>
               <div className="space-y-1">
@@ -313,7 +386,9 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
       {/* APPLY PORTAL DRAWER / DIALOG MODAL LAYOUT */}
       {activeJobForForm && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50 overflow-y-auto"
+          ref={modalRef}
+          tabIndex={-1}
+          className="fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50 overflow-y-auto outline-none"
           role="dialog"
           aria-labelledby="modal-apply-title"
           aria-modal="true"
@@ -348,7 +423,7 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
 
             {submitSuccess ? (
               // SUBMIT COMPLETED SCREEN
-              <div className={`bg-emerald-550/10 border border-brand-green/35 rounded-2xl p-6 space-y-4 text-center ${
+              <div className={`bg-emerald-500/10 border border-brand-green/30 rounded-2xl p-6 space-y-4 text-center ${
                 reduceMotion ? '' : 'animate-scale-up'
               }`} role="alert" id="careers-apply-success">
                 <CheckCircle className="h-12 w-12 text-brand-green mx-auto shrink-0" />
@@ -377,7 +452,7 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
               <form onSubmit={handleApplicationSubmit} className="space-y-4 text-xs font-sans">
                 {formError && (
                   <div className="bg-red-50 border-l-4 border-red-500 p-3 text-red-700 font-semibold rounded-r-md flex items-center gap-2" role="alert" id="form-error-callout">
-                    <AlertCircle className="h-4.5 w-4.5 shrink-0" />
+                    <AlertCircle className="h-4 w-4 shrink-0" />
                     <span>{formError}</span>
                   </div>
                 )}
@@ -499,7 +574,7 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
                     value={coverLetter}
                     onChange={(e) => setCoverLetter(e.target.value)}
                     placeholder="e.g. I hold a Colorado Class B Wastewater treatment certificate and would like to obtain my Class A licensing via SPR co-sponsored training program..."
-                    rows={2.5}
+                    rows={3}
                     className="w-full p-2.5 border border-gray-300 rounded-lg focus:border-brand-primary outline-hidden"
                   />
                 </div>

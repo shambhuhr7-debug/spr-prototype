@@ -151,11 +151,11 @@ export default function WaterLedger({ reduceMotion }: WaterLedgerProps) {
 
   return (
     <section 
-      className="bg-white border border-gray-250 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6"
+      className="bg-white border border-gray-300 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6"
       id="water-quality-ledger"
       aria-label="Water Quality Ledger Dashboard"
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-150 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full text-xs font-bold font-mono">
             <span>AUDIT DISCLOSURE: SAMPLE DATA &mdash; FOR DEMONSTRATION ONLY</span>
@@ -167,8 +167,8 @@ export default function WaterLedger({ reduceMotion }: WaterLedgerProps) {
             As a public, ratepayer-funded environmental utility, we log hourly telemetry. This dashboard displays a real-time sample 7-day trend crossing Colorado Department of Public Health and Environment (CDPHE) regulatory limits.
           </p>
         </div>
-        <div className="shrink-0 flex items-center gap-2 bg-emerald-50 text-brand-green border border-brand-green/20 px-3.5 py-1.5 rounded-full text-xs font-bold">
-          <CheckCircle className="h-4.5 w-4.5 text-brand-green" />
+        <div className="shrink-0 flex items-center gap-2 bg-emerald-500/10 text-brand-green border border-brand-green/20 px-3.5 py-1.5 rounded-full text-xs font-bold">
+          <CheckCircle className="h-4 w-4 text-brand-green" />
           <span>CDPHE 100% COMPLIANT</span>
         </div>
       </div>
@@ -185,7 +185,7 @@ export default function WaterLedger({ reduceMotion }: WaterLedgerProps) {
             className={`px-4 py-2.5 text-xs font-bold rounded-xl border cursor-pointer transition-all ${
               activeMetricId === metric.id
                 ? 'bg-brand-primary text-white border-brand-primary font-bold shadow-sm'
-                : 'bg-white text-slate-600 border-gray-250 hover:bg-slate-50 hover:border-slate-400'
+                : 'bg-white text-slate-600 border-gray-300 hover:bg-slate-50 hover:border-slate-400'
             }`}
             role="tab"
             aria-selected={activeMetricId === metric.id}
@@ -258,7 +258,7 @@ export default function WaterLedger({ reduceMotion }: WaterLedgerProps) {
                 d={svgAreaD} 
                 fill="url(#trend-gradient-fill)" 
                 opacity={reduceMotion ? "0.1" : "0.15"} 
-                className={reduceMotion ? '' : 'transition-all duration-350'}
+                className={reduceMotion ? '' : 'transition-all duration-300'}
               />
 
               {/* Vector trend Line path */}
@@ -269,7 +269,7 @@ export default function WaterLedger({ reduceMotion }: WaterLedgerProps) {
                 strokeWidth="3.5" 
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={reduceMotion ? '' : 'transition-all duration-350'}
+                className={reduceMotion ? '' : 'transition-all duration-300'}
               />
 
               {/* CDPHE Regulatory limit line */}
@@ -361,7 +361,7 @@ export default function WaterLedger({ reduceMotion }: WaterLedgerProps) {
           </div>
 
           {/* Interactive Keyboard Points Ring Tab Index */}
-          <div className="flex justify-between bg-slate-50 border border-gray-150 rounded-xl p-3" role="group" aria-label="Interactive chart coordinate indicators">
+          <div className="flex justify-between bg-slate-50 border border-gray-200 rounded-xl p-3" role="group" aria-label="Interactive chart coordinate indicators">
             {points.map((p, idx) => {
               const isSelected = focusedPointIndex === idx;
               return (
@@ -448,7 +448,7 @@ export default function WaterLedger({ reduceMotion }: WaterLedgerProps) {
             )}
           </div>
 
-          <div className="bg-neutral-soft p-4 rounded-xl border border-gray-150 space-y-1">
+          <div className="bg-neutral-soft p-4 rounded-xl border border-gray-200 space-y-1">
             <span className="block text-[10px] font-bold uppercase tracking-wider text-neutral-ink font-display">
               CDPHE Discharge Permit Co-Pilot
             </span>
@@ -460,7 +460,7 @@ export default function WaterLedger({ reduceMotion }: WaterLedgerProps) {
       </div>
 
       {/* WCAG 2.2 Table Fallback section for equal access proof point */}
-      <section className="bg-neutral-soft border border-gray-150 rounded-2xl p-5 space-y-3" id="ledger-text-table-fallback">
+      <section className="bg-neutral-soft border border-gray-200 rounded-2xl p-5 space-y-3" id="ledger-text-table-fallback">
         <div className="flex items-center gap-2 border-b border-gray-200/80 pb-2">
           <TableProperties className="h-5 w-5 text-brand-primary" />
           <h3 className="text-xs font-extrabold font-display uppercase tracking-wider text-neutral-ink">
