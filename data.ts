@@ -5,8 +5,10 @@ export const SYSTEM_STATS = {
   connectingCommunities: 19,
   serviceAreaSqMi: 75,
   biosolidsAcres: "7,530.6",
-  dailyFlowMGD: "24.5",
-  waterPurityPercent: "99.98%"
+  dailyFlowMGD: "~20 MGD",
+  ratedCapacityMGD: "50 MGD",
+  permitCompliance: "100%",
+  permitComplianceDetail: "Meets CDPHE Discharge Permit"
 };
 
 export const CONNECTING_COMMUNITIES = [

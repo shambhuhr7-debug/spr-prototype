@@ -4,6 +4,7 @@ import {
 } from '../data';
 import { PARCProject } from '../types';
 import { MapPin, Info, Users, Landmark, FileSpreadsheet, Layers, Cpu, Compass } from 'lucide-react';
+import WaterLedger from './WaterLedger';
 
 interface PARCMapViewProps {
   highContrast: boolean;
@@ -134,20 +135,22 @@ export default function PARCMapView({ highContrast, reduceMotion }: PARCMapViewP
                   key={project.id}
                   onClick={() => handleProjectSelect(project.id)}
                   id={`blueprint-hotspot-${project.id}`}
-                  className={`absolute group cursor-pointer p-1 rounded-full transition-transform focus:scale-120 outline-none flex items-center justify-center -translate-x-1/2 -translate-y-1/2 ${
-                    isSelected ? 'z-50 scale-110' : 'z-20 hover:scale-105'
+                  className={`absolute group cursor-pointer p-1 rounded-full transition-all duration-200 ease-out focus:scale-120 outline-none flex items-center justify-center -translate-x-1/2 -translate-y-1/2 ${
+                    isSelected ? 'z-50 scale-125' : 'z-20 hover:scale-110'
                   }`}
                   style={{ left: `${project.coords.x}%`, top: `${project.coords.y}%` }}
                   aria-label={`Interactive Map Pin: ${project.name}. Click for details.`}
                   aria-pressed={isSelected}
                 >
                   {/* Outer Pulsing Indicator Ring */}
-                  <span className={`absolute inline-flex h-8 w-8 rounded-full opacity-65 transition-all ${
-                    isSelected ? 'animate-ping bg-brand-primary' : 'bg-brand-teal/80 group-hover:scale-110'
+                  <span className={`absolute inline-flex h-8 w-8 rounded-full opacity-65 transition-all duration-300 ${
+                    isSelected 
+                      ? (reduceMotion ? 'bg-brand-primary' : 'animate-soft-pulse bg-brand-primary') 
+                      : 'bg-brand-teal/80 group-hover:scale-110'
                   }`} />
                   
                   {/* Central Glow Core */}
-                  <div className={`h-4.5 w-4.5 rounded-full flex items-center justify-center text-[9px] font-bold text-white shadow-md border ${
+                  <div className={`h-4.5 w-4.5 rounded-full flex items-center justify-center text-[9px] font-bold text-white shadow-md border transition-all duration-200 ${
                     isSelected 
                       ? 'bg-brand-primary border-white' 
                       : 'bg-[#1A2730] border-brand-teal group-hover:bg-brand-teal'
@@ -179,13 +182,13 @@ export default function PARCMapView({ highContrast, reduceMotion }: PARCMapViewP
 
         {/* Right Side: High-legibility interactive details Panel (Lg: 5cols) */}
         <div 
-          className="lg:col-span-1 border border-gray-200 rounded-2xl p-6 bg-white shadow-sm flex flex-col justify-between h-full space-y-6 md:min-h-[440px] lg:col-span-5"
+          className="border border-gray-200 rounded-2xl p-6 bg-white shadow-sm flex flex-col justify-between h-full space-y-6 md:min-h-[440px] lg:col-span-5"
           id="parc-details-panel"
           role="region"
           aria-live="polite"
           aria-label={`Detailed parameters for ${activeProject.name}`}
         >
-          <div className="space-y-4">
+          <div key={selectedProjectId} className={`space-y-4 ${reduceMotion ? '' : 'animate-details-enter'}`}>
             <div className="border-b border-gray-100 pb-3 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">
@@ -303,6 +306,9 @@ export default function PARCMapView({ highContrast, reduceMotion }: PARCMapViewP
           </table>
         </div>
       </section>
+
+      {/* Water Compliance Quality Ledger System */}
+      <WaterLedger reduceMotion={reduceMotion} />
     </div>
   );
 }

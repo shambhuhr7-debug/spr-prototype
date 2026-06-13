@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { MOCK_JOBS, SYSTEM_STATS } from '../data';
 import { OdorReport } from '../types';
+import AnimatedProcessFlow from './AnimatedProcessFlow';
 
 interface HomeViewProps {
   onNavigate: (view: 'home' | 'parc' | 'careers') => void;
@@ -19,6 +20,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
   const [communities, setCommunities] = React.useState(0);
   const [serviceArea, setServiceArea] = React.useState(0);
   const [farmAcres, setFarmAcres] = React.useState(0);
+  const statsRef = React.useRef<HTMLDivElement>(null);
 
   // Concern Form State
   const [concernLocation, setConcernLocation] = React.useState('');
@@ -49,6 +51,16 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
   const [odorStatus, setOdorStatus] = React.useState<'None' | 'Light' | 'Moderate'>('None');
 
   React.useEffect(() => {
+    const el = statsRef.current;
+    if (!el) {
+      // Fallback
+      setResidents(300000);
+      setCommunities(19);
+      setServiceArea(75);
+      setFarmAcres(7530);
+      return;
+    }
+
     if (reduceMotion) {
       setResidents(300000);
       setCommunities(19);
@@ -57,52 +69,83 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
       return;
     }
 
-    // Rapid increment counters
-    let rStart = 0;
-    const rInterval = setInterval(() => {
-      rStart += 6000;
-      if (rStart >= 300000) {
-        setResidents(300000);
-        clearInterval(rInterval);
-      } else {
-        setResidents(rStart);
-      }
-    }, 20);
+    let rInterval: NodeJS.Timeout;
+    let cInterval: NodeJS.Timeout;
+    let sInterval: NodeJS.Timeout;
+    let fInterval: NodeJS.Timeout;
 
-    let cStart = 0;
-    const cInterval = setInterval(() => {
-      cStart += 1;
-      if (cStart >= 19) {
-        setCommunities(19);
-        clearInterval(cInterval);
-      } else {
-        setCommunities(cStart);
-      }
-    }, 30);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Clear active intervals
+          clearInterval(rInterval);
+          clearInterval(cInterval);
+          clearInterval(sInterval);
+          clearInterval(fInterval);
 
-    let sStart = 0;
-    const sInterval = setInterval(() => {
-      sStart += 2;
-      if (sStart >= 75) {
-        setServiceArea(75);
-        clearInterval(sInterval);
-      } else {
-        setServiceArea(sStart);
-      }
-    }, 20);
+          // Reset values
+          setResidents(0);
+          setCommunities(0);
+          setServiceArea(0);
+          setFarmAcres(0);
 
-    let fStart = 0;
-    const fInterval = setInterval(() => {
-      fStart += 125;
-      if (fStart >= 7530) {
-        setFarmAcres(7530);
-        clearInterval(fInterval);
-      } else {
-        setFarmAcres(fStart);
-      }
-    }, 20);
+          let rStart = 0;
+          rInterval = setInterval(() => {
+            rStart += 6000;
+            if (rStart >= 300000) {
+              setResidents(300000);
+              clearInterval(rInterval);
+            } else {
+              setResidents(rStart);
+            }
+          }, 16);
+
+          let cStart = 0;
+          cInterval = setInterval(() => {
+            cStart += 1;
+            if (cStart >= 19) {
+              setCommunities(19);
+              clearInterval(cInterval);
+            } else {
+              setCommunities(cStart);
+            }
+          }, 24);
+
+          let sStart = 0;
+          sInterval = setInterval(() => {
+            sStart += 2;
+            if (sStart >= 75) {
+              setServiceArea(75);
+              clearInterval(sInterval);
+            } else {
+              setServiceArea(sStart);
+            }
+          }, 16);
+
+          let fStart = 0;
+          fInterval = setInterval(() => {
+            fStart += 125;
+            if (fStart >= 7530) {
+              setFarmAcres(7530);
+              clearInterval(fInterval);
+            } else {
+              setFarmAcres(fStart);
+            }
+          }, 16);
+        } else {
+          // Reset to 0 when out of view
+          setResidents(0);
+          setCommunities(0);
+          setServiceArea(0);
+          setFarmAcres(0);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(el);
 
     return () => {
+      observer.disconnect();
       clearInterval(rInterval);
       clearInterval(cInterval);
       clearInterval(sInterval);
@@ -176,7 +219,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
           </div>
 
           {/* Large Live Counter Row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-4 border-t border-white/10" role="region" aria-label="Utility Scale Statistics">
+          <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-4 border-t border-white/10" role="region" aria-label="Utility Scale Statistics">
             <div className="space-y-1 text-center md:text-left">
               <span className="block text-3xl sm:text-4xl font-bold font-display text-brand-teal">
                 {residents.toLocaleString()}+
@@ -231,7 +274,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
                 Process System Status
               </h2>
               <div className="flex items-center gap-1.5 bg-emerald-50 text-brand-green px-2.5 py-1 rounded-full text-xs font-bold border border-brand-green/20">
-                <span className="h-2 w-2 bg-brand-green rounded-full animate-ping" />
+                <span className="h-2 w-2 bg-brand-green rounded-full animate-soft-pulse" />
                 <span>ONLINE</span>
               </div>
             </div>
@@ -239,14 +282,16 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
             {/* Treatment Stats Grid */}
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-neutral-soft p-3.5 rounded-xl border border-gray-100 space-y-0.5">
-                <span className="block text-xxs font-bold text-slate-500 uppercase tracking-wide">Daily Treatment Flow</span>
-                <span className="block text-lg font-bold font-display text-neutral-ink">{SYSTEM_STATS.dailyFlowMGD} MGD</span>
-                <span className="block text-[10px] text-brand-primary">Million Gallons / Day</span>
+                <span className="block text-xxs font-bold text-slate-500 uppercase tracking-wide">Avg. Daily Flow (Sample)</span>
+                <span className="block text-lg font-bold font-display text-neutral-ink">{SYSTEM_STATS.dailyFlowMGD}</span>
+                <span className="block text-[10px] text-slate-500 font-sans leading-tight">
+                  <span className="font-semibold text-brand-teal">{SYSTEM_STATS.ratedCapacityMGD}</span> — Rated Capacity
+                </span>
               </div>
               <div className="bg-neutral-soft p-3.5 rounded-xl border border-gray-100 space-y-0.5">
-                <span className="block text-xxs font-bold text-slate-500 uppercase tracking-wide">Output Purifying Purity</span>
-                <span className="block text-lg font-bold font-display text-neutral-ink">{SYSTEM_STATS.waterPurityPercent}</span>
-                <span className="block text-[10px] text-brand-green">Exceeds EPA Regs</span>
+                <span className="block text-xxs font-bold text-slate-500 uppercase tracking-wide">Permit Compliance</span>
+                <span className="block text-lg font-bold font-display text-neutral-ink">{SYSTEM_STATS.permitCompliance}</span>
+                <span className="block text-[10px] text-brand-green font-semibold leading-tight">{SYSTEM_STATS.permitComplianceDetail}</span>
               </div>
             </div>
 
@@ -449,6 +494,9 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
         </div>
       </section>
 
+      {/* 2.5 ANIMATED WATER RECOVERY PROCESS SIMULATOR */}
+      <AnimatedProcessFlow reduceMotion={reduceMotion} />
+
       {/* 3. FOUR BENTO BOX USER ENTRY PORTALS */}
       <section className="space-y-6" id="bento-portals-section">
         <div className="text-center max-w-2xl mx-auto space-y-2">
@@ -464,7 +512,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           
           {/* Card 1: Ratepayers & Citizens */}
-          <div className="bg-white border border-gray-200 hover:border-brand-teal transition-all duration-200 rounded-2xl p-6 flex flex-col justify-between group shadow-xs">
+          <div tabIndex={0} className="bg-white border border-gray-200 hover:border-brand-teal focus-within:border-brand-teal transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-within:-translate-y-1 focus-within:shadow-md focus-within:ring-2 focus-within:ring-brand-teal/40 outline-hidden rounded-2xl p-6 flex flex-col justify-between group">
             <div className="space-y-3">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-brand-primary flex items-center justify-center border border-brand-primary/10">
                 <Landmark className="h-5 w-5" />
@@ -494,7 +542,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
           </div>
 
           {/* Card 2: Businesses & Dischargers */}
-          <div className="bg-white border border-gray-200 hover:border-brand-teal transition-all duration-200 rounded-2xl p-6 flex flex-col justify-between group shadow-xs">
+          <div tabIndex={0} className="bg-white border border-gray-200 hover:border-brand-teal focus-within:border-brand-teal transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-within:-translate-y-1 focus-within:shadow-md focus-within:ring-2 focus-within:ring-brand-teal/40 outline-hidden rounded-2xl p-6 flex flex-col justify-between group">
             <div className="space-y-3">
               <div className="w-10 h-10 rounded-xl bg-teal-50 text-brand-teal flex items-center justify-center border border-brand-teal/10">
                 <Building2 className="h-5 w-5" />
@@ -524,7 +572,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
           </div>
 
           {/* Card 3: Careers & Operators */}
-          <div className="bg-white border border-gray-200 hover:border-brand-teal transition-all duration-200 rounded-2xl p-6 flex flex-col justify-between group shadow-xs">
+          <div tabIndex={0} className="bg-white border border-gray-200 hover:border-brand-teal focus-within:border-brand-teal transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-within:-translate-y-1 focus-within:shadow-md focus-within:ring-2 focus-within:ring-brand-teal/40 outline-hidden rounded-2xl p-6 flex flex-col justify-between group">
             <div className="space-y-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-50 text-brand-green flex items-center justify-center border border-brand-green/10">
                 <Users className="h-5 w-5" />
@@ -555,7 +603,7 @@ export default function HomeView({ onNavigate, reduceMotion }: HomeViewProps) {
           </div>
 
           {/* Card 4: Newsroom & Pilot Works */}
-          <div className="bg-white border border-gray-200 hover:border-brand-teal transition-all duration-200 rounded-2xl p-6 flex flex-col justify-between group shadow-xs">
+          <div tabIndex={0} className="bg-white border border-gray-200 hover:border-brand-teal focus-within:border-brand-teal transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-within:-translate-y-1 focus-within:shadow-md focus-within:ring-2 focus-within:ring-brand-teal/40 outline-hidden rounded-2xl p-6 flex flex-col justify-between group">
             <div className="space-y-3">
               <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center border border-indigo-700/10">
                 <Radio className="h-5 w-5" />

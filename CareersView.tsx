@@ -6,6 +6,7 @@ import {
   ChevronRight, ArrowLeft, Upload, FileText, CheckCircle,
   HelpCircle, Eye, AlertCircle, X
 } from 'lucide-react';
+import CareerPathfinder from './CareerPathfinder';
 
 interface CareersViewProps {
   highContrast: boolean;
@@ -135,6 +136,9 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
         </p>
       </div>
 
+      {/* Operator Career Guidance Pathfinder Tool */}
+      <CareerPathfinder reduceMotion={reduceMotion} onSelectJob={handleApplyClick} />
+
       {/* Filter / Search Bar Panel */}
       <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
         {/* Keyword Search */}
@@ -206,7 +210,7 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
       {/* Main Results Display */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Filtered Openings Lists (Lg: 7cols) */}
-        <div className="lg:col-span-7 space-y-4" id="job-postings-list">
+        <div key={`${selectedDept}-${selectedType}-${searchTerm}`} className="lg:col-span-7 space-y-4" id="job-postings-list">
           {filteredJobs.length === 0 ? (
             <div className="bg-slate-50 border border-gray-200 rounded-2xl p-10 text-center space-y-3">
               <HelpCircle className="h-10 w-10 text-slate-400 mx-auto" />
@@ -216,10 +220,14 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
               </p>
             </div>
           ) : (
-            filteredJobs.map((job) => (
+            filteredJobs.map((job, idx) => (
               <div 
                 key={job.id} 
-                className="bg-white border border-gray-200 hover:border-brand-teal transition-all duration-250 rounded-2xl p-5 shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group"
+                tabIndex={0}
+                className={`bg-white border border-gray-200 hover:border-brand-teal focus-within:border-brand-teal transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-within:-translate-y-1 focus-within:shadow-md focus-within:ring-2 focus-within:ring-brand-teal/40 outline-hidden rounded-2xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 group ${
+                  reduceMotion ? '' : 'opacity-0 animate-stagger-fade'
+                }`}
+                style={reduceMotion ? {} : { animationDelay: `${idx * 30}ms` }}
               >
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
@@ -340,7 +348,9 @@ export default function CareersView({ highContrast, reduceMotion }: CareersViewP
 
             {submitSuccess ? (
               // SUBMIT COMPLETED SCREEN
-              <div className="bg-emerald-550/10 border border-brand-green/35 rounded-2xl p-6 space-y-4 text-center" role="alert" id="careers-apply-success">
+              <div className={`bg-emerald-550/10 border border-brand-green/35 rounded-2xl p-6 space-y-4 text-center ${
+                reduceMotion ? '' : 'animate-scale-up'
+              }`} role="alert" id="careers-apply-success">
                 <CheckCircle className="h-12 w-12 text-brand-green mx-auto shrink-0" />
                 <div className="space-y-1">
                   <h3 className="text-base font-bold text-brand-green">Application Received Successfully</h3>
